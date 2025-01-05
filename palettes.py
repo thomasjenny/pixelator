@@ -12,27 +12,33 @@ class Palettes:
             assets/palettes_hex.json)
     """
 
-    def __init__(self, default_palettes_file_path: str = "assets/palettes_hex.json"):
-        """Initialize the Palettes class with the default color palette 
-        file path.
+    # def __init__(
+    #     self, default_palettes_file_path: str = "assets/palettes_hex.json"
+    # ) -> None:
+    #     """Initialize the Palettes class with the default color palette
+    #     file path.
+    # 
+    #     Args:
+    #         default_palettes_file_path (str): the default path to the
+    #         JSON file containing the color palettes hex codes (default:
+    #         assets/palettes_hex.json)
+    #     """
+    #     self.default_palettes_file_path = default_palettes_file_path
 
-        Args:
-            default_palettes_file_path (str): the default path to the 
-            JSON file containing the color palettes hex codes (default:
-            assets/palettes_hex.json)
-        """
-        self.default_palettes_file_path = default_palettes_file_path
+    default_palettes_file_path = "assets/palettes_hex.json"
 
+    @staticmethod
     def create_rgb_palettes(
-        self, palettes_file_path: str = None
+        # self, palettes_file_path: str = None
+        palettes_file_path: str = None
     ) -> Dict[str, List[tuple]]:
         """Convert the palettes' hex color codes into RGB.
 
         Args:
-            palettes_file_path (optional, str): file path to the 
+            palettes_file_path (optional, str): file path to the
                 palettes JSON file.
         """
-        palettes_file_path = palettes_file_path or self.default_palettes_file_path
+        palettes_file_path = palettes_file_path or Palettes.default_palettes_file_path
         rgb_palettes = {}
 
         with open(palettes_file_path, "r") as file:
@@ -46,7 +52,9 @@ class Palettes:
 
 
 if __name__ == "__main__":
-    instance_test = Palettes()
-    palette_test = instance_test.create_rgb_palettes()
-    print(type(palette_test))
-    print(palette_test)
+    # palette_instance_test = Palettes()
+    # palette_test = palette_instance_test.create_rgb_palettes()
+    # print(type(palette_test))
+    # print(palette_test)
+    palettes_test = Palettes.create_rgb_palettes()
+    print(palettes_test)
