@@ -29,7 +29,7 @@ def generate_color_dfs():
     return palettes_dict
 
 
-def style_color_df(df):
+def create_styling_df(df):
     """Return a styling dataframe containing CSS to color each cell with
     the corresponding hex value. Must be applied to the original datafame.
     """
@@ -53,5 +53,5 @@ if __name__ == "__main__":
     # print(p8)
     # print(type(p8))
 
-    styletest = style_color_df(p8)
+    styletest = create_styling_df(p8)
     print(styletest)
