@@ -1,29 +1,69 @@
 import pandas as pd
 from pixelator import Pixelator
 import streamlit as st
-from utils import generate_color_dfs, style_color_df
+from utils import load_palettes, generate_color_dfs, create_styling_df
 
+from PIL import Image
 
-st.title("Test")
+st.title("Pixelator")
+st.subheader("Create pixel art from any image!")
+
 
 img = st.file_uploader("Upload", type=["jpg"])
+# if img:
+#     image = Image.open(img)
+#     st.image(image)
 
-# Display the image (only if an image has been selected)
-if img is not None:
-    st.image(img)
+pixel_size = st.select_slider(
+    "Select pixel size",
+    options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+)
+# st.write(pixel_size)
+# st.write(type(pixel_size))
 
-# Generate a dictionary that contains the palette name (key) and a 5-column
-# wide dataframe with all hex values (value)
-palettes = generate_color_dfs()
-# Select one of the palettes (= dataframe)
-pico8 = palettes["pico-8"]
+palette = st.selectbox(
+    "Color palette", ["No palette", *load_palettes().keys()], index=None
+)
 
-# Create the style dataframe (returns a copy of the original df, but each cell
-# contains f"background-color: {cell hex value}")
-style_df = style_color_df(pico8)
+if palette == "No palette":
+    palette = ""
+else:
+    palette = palette
 
-# Apply the styling to the original df (color each cell)
-styled_df = pico8.style.apply(lambda x: style_df, axis=None)
+# Display the following only if an image has been selected:
+if img:
+    pixelator = Pixelator()
+    test = pixelator.pixelate(img, pixel_size, palette)
+    st.image(test)
 
-# Display the styled dataframe in Streamlit
-st.dataframe(styled_df)
+# ----------------------------------------------------------------------
+# # Generate a dictionary that contains the palette name (key) and a 5-column
+# # wide dataframe with all hex values (value)
+# palettes = generate_color_dfs()
+# # Select one of the palettes (= dataframe)
+# pico8 = palettes["pico-8"]
+
+# # Create the style dataframe (returns a copy of the original df, but each cell
+# # contains f"background-color: {cell hex value}")
+# style_df = create_styling_df(pico8)
+
+# # Apply the styling to the original df (color each cell)
+# styled_df = pico8.style.apply(lambda x: style_df, axis=None)
+
+# # Display the styled dataframe in Streamlit
+# st.dataframe(styled_df)
+# ----------------------------------------------------------------------
+
+
+with st.expander("See color palettes"):
+    st.header("Color palettes preview")
+
+    # Generate a dictionary that contains the palette name (key) and a 5-column
+    # wide dataframe with all hex values (value)
+    palettes = generate_color_dfs()
+
+    for palette_name, palette in palettes.items():
+        style_df = create_styling_df(palette)
+        styled_palette_df = palette.style.apply(lambda x: style_df, axis=None)
+        st.write(palette_name)
+        st.dataframe(styled_palette_df)
