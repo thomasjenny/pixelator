@@ -1,3 +1,4 @@
+from io import BytesIO
 import pandas as pd
 from pixelator import Pixelator
 import streamlit as st
@@ -30,11 +31,28 @@ if palette == "No palette":
 else:
     palette = palette
 
-# Display the following only if an image has been selected:
 if img:
     pixelator = Pixelator()
-    test = pixelator.pixelate(img, pixel_size, palette)
-    st.image(test)
+    pixelated_image = pixelator.pixelate(img, pixel_size, palette)
+    # Save pixelated image in buffer
+    # https://discuss.streamlit.io/t/how-to-download-image/3358/10
+    buf = BytesIO()
+    pixelated_image.save(buf, format="JPEG")
+    byte_im = buf.getvalue()
+
+preview_button = st.button("Preview", type="primary")
+preview_button
+
+if pixelated_image and preview_button:
+    st.image(pixelated_image)
+
+st.download_button(label="Save", data=byte_im, file_name="pixelator.jpg", mime="image/jpeg")
+
+# Display the following only if an image has been selected:
+# if img:
+#     pixelator = Pixelator()
+#     test = pixelator.pixelate(img, pixel_size, palette)
+#     st.image(test)
 
 # ----------------------------------------------------------------------
 # # Generate a dictionary that contains the palette name (key) and a 5-column
@@ -67,3 +85,20 @@ with st.expander("See color palettes"):
         styled_palette_df = palette.style.apply(lambda x: style_df, axis=None)
         st.write(palette_name)
         st.dataframe(styled_palette_df)
+
+
+def palette_page():
+    st.title("Color palette overview")
+
+    for palette_name, palette in palettes.items():
+        style_df = create_styling_df(palette)
+        styled_palette_df = palette.style.apply(lambda x: style_df, axis=None)
+        st.write(palette_name)
+        st.dataframe(styled_palette_df)
+
+pg = st.navigation([
+    st.Page("pixelator-ui.py", title = "main", default=True),
+    st.Page(palette_page, title = "test2"),
+])
+
+pg.run()
