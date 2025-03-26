@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def load_palettes(path: str = "assets/palettes_hex.json"):
-    """Load all coloro palletes and return the hex values"""
+    """Load all color palettes and return the hex values"""
     with open(path) as file:
         palettes = json.load(file)
         return palettes
