@@ -15,23 +15,26 @@ class Pixelator:
     def __init__(self, palettes_file_path: str = "assets/palettes_hex.json"):
         self.palettes_file_path = palettes_file_path
 
-    def get_palettes(self) -> dict[str, list[tuple]]:
+    def get_palettes(self, mode: str = "RGB") -> dict[str, list[tuple]]:
         """Load all palettes with their hex color codes, convert them
         to RGB, and return the RGB palettes. Uses the default file path
         as defined on class level.
         """
-        rgb_palettes = {}
+        palettes = {}
         palettes_file_path = self.palettes_file_path
 
         with open(palettes_file_path, "r") as file:
-            palettes = json.load(file)
+            palettes_raw = json.load(file)
 
-        for palette_name, palette in palettes.items():
-            rgb_palettes[palette_name] = [
-                ImageColor.getcolor(hex_code, "RGB") for hex_code in palette
-            ]
+        if mode == "RGB":
+            for palette_name, palette in palettes_raw.items():
+                palettes[palette_name] = [
+                    ImageColor.getcolor(hex_code, "RGB") for hex_code in palette
+                ]
+        elif mode == "HEX":
+            palettes = palettes_raw
 
-        return rgb_palettes
+        return palettes
 
     def recolor_pixel(self, square: np.ndarray, palette: str = "") -> list[int]:
         """Calculates the average red, green, and blue values of all
@@ -75,7 +78,7 @@ class Pixelator:
         rgb_avg = [red_avg, green_avg, blue_avg]
 
         # Get color palettes
-        palettes = self.get_palettes()
+        palettes = self.get_palettes("RGB")
         # Calculate the index of the closest color in the palette
         if palette in palettes.keys():
             palette = palettes[palette]
