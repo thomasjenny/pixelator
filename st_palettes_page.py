@@ -64,11 +64,38 @@ def draw_palette(
 pixelator = Pixelator()
 palettes = pixelator.get_palettes("RGB")
 
+st.header("Color Palettes Preview")
+
 for palette_name, palette in palettes.items():
     with st.expander(f"**{palette_name}**"):
         fig = draw_palette(palette_name, palette)
         st.pyplot(fig, use_container_width=False)
 
+st.divider()
+
+st.header("Color Palette Credits")
+st.markdown(
+    """
+    [Sweetie 16](https://lospec.com/palette-list/sweetie-16) palette by GrafxKid  
+    [better16](https://lospec.com/palette-list/better16) palette by [PG](https://lospec.com/pg)  
+    [Pico-8](https://lospec.com/palette-list/pico-8) palette 
+    by [Pico-8](https://www.lexaloffle.com/pico-8.php)  
+    [AAP-64](https://lospec.com/palette-list/aap-64) palette 
+    by [Adigun A. Polack](https://lospec.com/adigunpolack)  
+    [Shimmering Sunset](https://lospec.com/palette-list/shimmering-sunset) palette
+    by [sillyTheJester](https://lospec.com/sillythejester)  
+    [Sorbet Special](https://lospec.com/palette-list/sorbet-special) palette 
+    by [Qirlfriend](https://lospec.com/qirlfriend)  
+    [Undernight 20](https://lospec.com/palette-list/undernight-20) palette
+    by [yedamameday](https://lospec.com/yedamameday)  
+    [Blood Moon](https://lospec.com/palette-list/blood-moon) palette
+    by [BaguetteCat](https://lospec.com/no-name5)  
+    [Slicko-8](https://lospec.com/palette-list/slicko-8) palette 
+    by [cptn.piranha](https://lospec.com/cptnpiranha)  
+    [Candy Heart](https://lospec.com/palette-list/candy-heart) palette
+    by [pixel rubik cube](https://lospec.com/pixelrubikcube)
+"""
+)
 
 if __name__ == "__main__":
     pixelator = Pixelator()
