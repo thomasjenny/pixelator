@@ -1,5 +1,8 @@
 import json
+import matplotlib.pyplot as plt
 import numpy as np
+import os
+from pathlib import Path
 from PIL import Image, ImageColor
 
 
@@ -13,15 +16,16 @@ class Pixelator:
     """
 
     def __init__(self, palettes_file_path: str = "assets/palettes_hex.json"):
-        self.palettes_file_path = palettes_file_path
         """Initializes a Pixelator instance with a path to the palettes
         JSON file.
 
         Args:
             palettes_file_path (str, optional): path to the JSON file
-                containing the color palettes. Defaults to 
+                containing the color palettes. Defaults to
                 "assets/palettes_hex.json".
         """
+        self.palettes_file_path = palettes_file_path
+        self.pixelated_image = None
 
     def get_palettes(self, mode: str = "RGB") -> dict[str, list[tuple]]:
         """Loads color palettes from a JSON file and converts them from
@@ -154,13 +158,54 @@ class Pixelator:
                 # Add recolored square to the new image's numpy array
                 new_image[i : i + pixel_size, j : j + pixel_size] = RGB_new
 
-        new_img = Image.fromarray(new_image)
+        self.pixelated_image = Image.fromarray(new_image)
 
-        return new_img
+        return self.pixelated_image
+
+    def show_image(self):
+        """Displays the pixelated image (if created)."""
+        if self.pixelated_image is not None:
+            plt.imshow(self.pixelated_image)
+            plt.axis("off")
+            plt.show()
+        else:
+            print(
+                "No pixelated image has been generated yet. "
+                "Call 'pixelate()' first to generate a pixelated image."
+            )
+
+    def save_image(self, out_path: str, out_img_name: str):
+        """Saves the pixelated image to the specified file path (if 
+        created).
+
+        Args:
+            out_path (str): ath where the pixelated image should be
+                saved.
+            out_img_name (str): name of the image to be saved.
+        """
+        if self.pixelated_image is not None:
+            img_out_path = Path(Path.cwd() / out_path)
+            os.makedirs(img_out_path, exist_ok=True)
+            self.pixelated_image.save(Path(img_out_path / out_img_name))
+        else:
+            print(
+                "Image cannot be saved - no pixelated image has been generated yet. "
+                "Call 'pixelate()' first to generate a pixelated image."
+            )
 
 
 if __name__ == "__main__":
-    image_path = "img/wave.jpg"
     pixelator = Pixelator()
-    test = pixelator.pixelate(image_path, 3, "shimmering_sunset")
-    test.show()
+
+    in_path = "img/lamborghini_small.jpg"
+    out_path = "pixelated_images"
+    out_name = "lambo_test.jpg"
+
+    # Test show and save functions before pixelating
+    # pixelator.show_image()
+    # pixelator.save_image(out_path, out_name)
+
+    # Pixelate image, show it and save it
+    pixelator.pixelate(in_path, 3, "shimmering_sunset")
+    pixelator.show_image()
+    pixelator.save_image(out_path, out_name)
