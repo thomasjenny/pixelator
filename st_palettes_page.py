@@ -77,7 +77,7 @@ st.header("Color Palette Credits")
 st.markdown(
     """
     [Sweetie 16](https://lospec.com/palette-list/sweetie-16) palette by GrafxKid  
-    [better16](https://lospec.com/palette-list/better16) palette by [PG](https://lospec.com/pg)  
+    [Better16](https://lospec.com/palette-list/better16) palette by [PG](https://lospec.com/pg)  
     [Pico-8](https://lospec.com/palette-list/pico-8) palette 
     by [Pico-8](https://www.lexaloffle.com/pico-8.php)  
     [AAP-64](https://lospec.com/palette-list/aap-64) palette 
@@ -88,6 +88,10 @@ st.markdown(
     by [Qirlfriend](https://lospec.com/qirlfriend)  
     [Undernight 20](https://lospec.com/palette-list/undernight-20) palette
     by [yedamameday](https://lospec.com/yedamameday)  
+    [BLK RX64](https://lospec.com/palette-list/blk-nx64) palette
+    by [BurakoIRL](https://lospec.com/blkirl)  
+    [Chasm](https://lospec.com/palette-list/chasm) palette 
+    by [dysphoriaa](https://lospec.com/dysphoriaa)  
     [Blood Moon](https://lospec.com/palette-list/blood-moon) palette
     by [BaguetteCat](https://lospec.com/no-name5)  
     [Slicko-8](https://lospec.com/palette-list/slicko-8) palette 
