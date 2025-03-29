@@ -9,16 +9,33 @@ class Pixelator:
 
     Attributes:
         palettes_file_path (str, optional): path to the color palattes
-            file used to recolor the image.
+            JSON file used for recoloring the image.
     """
 
     def __init__(self, palettes_file_path: str = "assets/palettes_hex.json"):
         self.palettes_file_path = palettes_file_path
+        """Initializes a Pixelator instance with a path to the palettes
+        JSON file.
+
+        Args:
+            palettes_file_path (str, optional): path to the JSON file
+                containing the color palettes. Defaults to 
+                "assets/palettes_hex.json".
+        """
 
     def get_palettes(self, mode: str = "RGB") -> dict[str, list[tuple]]:
-        """Load all palettes with their hex color codes, convert them
-        to RGB, and return the RGB palettes. Uses the default file path
-        as defined on class level.
+        """Loads color palettes from a JSON file and converts them from
+        HEX to RGB.
+
+        Args:
+            mode(str, optional): color mode for palettes. If set to
+            "RGB", the palette's hex codes are converted to RGB tuples,
+            otherwise, the original HEX codes are returned.
+
+        Returns:
+            dict[str, list[tuple]]: dict with palette names as keys
+                and color values as values (either RGB tuples or HEX
+                strings).
         """
         palettes = {}
         palettes_file_path = self.palettes_file_path
@@ -37,21 +54,25 @@ class Pixelator:
         return palettes
 
     def recolor_pixel(self, square: np.ndarray, palette: str = "") -> list[int]:
-        """Calculates the average red, green, and blue values of all
-        pixels in a given square with the following size: square side
-        length * square side length.
+        """Calculates the average RGB color of a pixel square and
+        recolors it.
+
+        This function computes the average color of all pixels in a
+        square region and optionally replaces it with the closest
+        matching color from a given color palette.
 
         Args:
             square (np.ndarray): 2D numpy array where each element is
                 a pixel represented as an array of red, green, and blue
                 values.
-            palette (str, optional): name of the color palette to
-                recolor the pixel. If not specified, the average color
-                of all pixels in the square used (default).
+            palette (str, optional): name of the color palette to use
+                for recoloring the pixel square. If not specified, the
+                average color of all pixels in the square used
+                (default).
 
         Returns:
-            list[int]: list of three integers representing the new red,
-                green, and blue values.
+            list[int]: list of three integers representing the new RGB
+                color.
         """
         # Prepare arrays for average color calculation
         square_height = len(square)
@@ -94,14 +115,20 @@ class Pixelator:
     def pixelate(
         self, image_path: str, pixel_size: int, palette: str = ""
     ) -> Image.Image:
-        """Pixelates and recolors the image.
+        """Pixelates an image and optionally recolors it using a
+        specified palette.
+
+        This funciton loads an image, processes it by dividing it into
+        square regions of the specified pixel size, and recolors each
+        region based on the chosen palette.
 
         Args:
             image_path (str): path to the image to be pixelated.
-            pixel_size (int): size of the pixels in the pixelated image
-            palette (str, optional): name of the color palette to
-                recolor the pixel. If not specified, the average color
-                of all pixels in the square used (default).
+            pixel_size (int): size of the pixel blocks in the pixelated
+                image.
+            palette (str, optional): name of the color palette to apply.
+                If not specified, the average color of each pixel block
+                is used (default).
 
         Returns:
             Image.Image: the pixelated image.
