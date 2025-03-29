@@ -26,13 +26,13 @@ class Pixelator:
         with open(palettes_file_path, "r") as file:
             palettes_raw = json.load(file)
 
-        if mode == "RGB":
+        if mode != "RGB":
+            palettes = palettes_raw
+        else:
             for palette_name, palette in palettes_raw.items():
                 palettes[palette_name] = [
                     ImageColor.getcolor(hex_code, "RGB") for hex_code in palette
                 ]
-        elif mode == "HEX":
-            palettes = palettes_raw
 
         return palettes
 
