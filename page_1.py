@@ -13,7 +13,8 @@ st.subheader("Create pixel art from any image!")
 original_image = st.file_uploader("Upload", type=["jpg"])
 pixel_size = st.select_slider("Select pixel size", options=[i for i in range(1, 11)])
 palette = st.selectbox(
-    "Color palette", ["No palette", *load_palettes().keys()], index=None
+    # "Color palette", ["No palette", *load_palettes().keys()], index=None
+    "Color palette", ["No palette", *pixelator.get_palettes("RGB").keys()], index=None
 )
 if palette == "No palette":
     palette = ""
