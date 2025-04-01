@@ -1,12 +1,16 @@
 from io import BytesIO
+import math
 import streamlit as st
 
 from pixelator import Pixelator
+from utils import draw_palette
+
+
+st.set_page_config(layout="wide")
 
 
 pixelator = Pixelator()
 
-st.set_page_config(layout="wide")
 
 st.title("Pixelator")
 st.subheader("Create pixel art from any image!")
@@ -93,3 +97,41 @@ with col2:
     #     mime="image/jpeg",
     # )
 
+
+st.divider()
+
+palettes = pixelator.get_palettes("RGB")
+palette_names = list(palettes)
+
+col3, col4 = st.columns(2, gap="large")
+
+first_half_of_palettes = palette_names[:math.ceil(len(palette_names)/2)]
+second_half_of_palettes = palette_names[math.ceil(len(palette_names)/2):]
+
+
+with col3:
+    first_half_of_palette_dicts = {key: palettes[key] for key in first_half_of_palettes}
+
+    for palette_name, palette in first_half_of_palette_dicts.items():
+        with st.expander(f"**{palette_name}**"):
+            fig = draw_palette(palette_name, palette)
+            st.pyplot(fig, use_container_width=False)
+
+    print("---")
+
+
+with col4:
+    second_half_of_palette_dicts = {key: palettes[key] for key in second_half_of_palettes}
+
+    for palette_name, palette in second_half_of_palette_dicts.items():
+        with st.expander(f"**{palette_name}**"):
+            fig = draw_palette(palette_name, palette)
+            st.pyplot(fig, use_container_width=False)
+
+
+print("-------------------")
+
+
+testlist = ["a", "b", "c", "d", "e"]
+print(testlist[:3])
+print(testlist[3:])
