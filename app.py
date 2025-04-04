@@ -16,7 +16,7 @@ st.title("Pixelator")
 st.subheader("Create pixel art from any image!")
 
 
-col1, col2 = st.columns([2, 3], gap="large")
+col1, col2, col3 = st.columns(3, gap="large")
 
 with col1:
     # Inputs
@@ -68,11 +68,16 @@ with col1:
     #         st.warning("Please pixelate an image first.")
 
 with col2:
+    st.write("Original image")
+
+    if original_image:
+        st.image(original_image)
+
+with col3:
     st.write("Image preview")
 
     if st.session_state.show_preview and st.session_state.pixelated_image is not None:
         st.image(st.session_state.pixelated_image)
-
 
 # # Pixelate
 # if original_image:
@@ -112,14 +117,15 @@ st.subheader("Color Palettes Preview")
 
 palettes = pixelator.get_palettes("RGB")
 palette_names = list(palettes)
-palettes_to_plot = math.ceil(len(palette_names) / 3)
+palettes_to_plot = math.ceil(len(palette_names) / 4)
 
 
-palette_col1, palette_col2, palette_col3 = st.columns(3, gap="large", border=True)
+palette_col1, palette_col2, palette_col3, palette_col4 = st.columns(4, gap="large", border=True)
 
 palette_column_1 = palette_names[:palettes_to_plot]
 palette_column_2 = palette_names[palettes_to_plot : palettes_to_plot * 2]
-palette_column_3 = palette_names[palettes_to_plot * 2 :]
+palette_column_3 = palette_names[palettes_to_plot * 2 : palettes_to_plot * 3]
+palette_column_4 = palette_names[palettes_to_plot * 3 :]
 
 
 with palette_col1:
@@ -136,6 +142,12 @@ with palette_col2:
 
 with palette_col3:
     col2_palettes = {key: palettes[key] for key in palette_column_3}
+    for palette_name, palette in col2_palettes.items():
+        fig = draw_palette(palette_name, palette)
+        st.pyplot(fig, use_container_width=False)
+
+with palette_col4:
+    col2_palettes = {key: palettes[key] for key in palette_column_4}
     for palette_name, palette in col2_palettes.items():
         fig = draw_palette(palette_name, palette)
         st.pyplot(fig, use_container_width=False)
