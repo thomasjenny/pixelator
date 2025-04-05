@@ -47,9 +47,9 @@ class Pixelator:
         with open(palettes_file_path, "r") as file:
             palettes_raw = json.load(file)
 
-        if mode == "hex":
+        if mode.lower() == "hex":
             palettes = palettes_raw
-        elif mode == "rgb":
+        elif mode.lower() == "rgb":
             for palette_name, palette in palettes_raw.items():
                 palettes[palette_name] = [
                     ImageColor.getcolor(hex_code, "RGB") for hex_code in palette
