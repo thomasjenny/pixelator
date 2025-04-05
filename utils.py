@@ -99,6 +99,7 @@ def draw_palette(
 if __name__ == "__main__":
     from pixelator import Pixelator
 
+
     pixelator = Pixelator()
     palettes = pixelator.get_palettes("HEX")
 
