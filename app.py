@@ -56,7 +56,7 @@ with col1:
         label="Select the output pixel size of your pixelated image",
         value=5,
         options=[i for i in range(2, 11)],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
     st.write(" ")
 
@@ -65,7 +65,7 @@ with col1:
         label="Select your color palette",
         options=["No palette", *pixelator.get_palettes("RGB").keys()],
         index=None,
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
     palette = "" if palette_input == "No palette" else str(palette_input)
     st.text(" ")
@@ -103,12 +103,20 @@ with col3:
         st.session_state.pixelated_image.save(temp_buffer, format="JPEG")
         buffered_image = temp_buffer.getvalue()
 
-    # Download button - download buffered image
     if st.session_state.pixelated_image is not None:
+        # Text input field to specifcy a filename
+        st.write("Enter a filename for your image")
+        filename = st.text_input(
+            label="Enter a filename for your image",
+            value="pixelated_image",
+            label_visibility="collapsed",
+        )
+
+        # Download button - download buffered image
         st.download_button(
             label="Download pixelated image",
             data=buffered_image,
-            file_name="pixelator.jpg",
+            file_name=f"{filename}.jpg",
             mime="image/jpeg",
             use_container_width=True,
         )
