@@ -27,7 +27,7 @@ class Pixelator:
         self.palettes_file_path = palettes_file_path
         self.pixelated_image = None
 
-    def get_palettes(self, mode: str = "RGB") -> dict[str, list[tuple]]:
+    def get_palettes(self, mode: str = "rgb") -> dict[str, list[tuple]]:
         """Loads color palettes from a JSON file and converts them from
         HEX to RGB.
 
@@ -47,13 +47,15 @@ class Pixelator:
         with open(palettes_file_path, "r") as file:
             palettes_raw = json.load(file)
 
-        if mode != "RGB":
+        if mode == "hex":
             palettes = palettes_raw
-        else:
+        elif mode == "rgb":
             for palette_name, palette in palettes_raw.items():
                 palettes[palette_name] = [
                     ImageColor.getcolor(hex_code, "RGB") for hex_code in palette
                 ]
+        else:
+            palettes = palettes_raw
 
         return palettes
 
