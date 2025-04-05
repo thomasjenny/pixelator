@@ -1,5 +1,4 @@
 from io import BytesIO
-import math
 import streamlit as st
 
 from pixelator import Pixelator
@@ -46,28 +45,35 @@ col1, col2, col3 = st.columns(3, gap="large")
 
 # Inputs
 with col1:
-    original_image = st.file_uploader(label="Upload your image", type=["jpg"])
-    st.text(" ")
+    st.write("Upload your image")
+    original_image = st.file_uploader(
+        label="Upload your image", type=["jpg"], label_visibility="collapsed"
+    )
+    st.write(" ")
 
+    st.write("Select your output pixel size")
     pixel_size_input = st.select_slider(
         label="Select the output pixel size of your pixelated image",
         value=5,
         options=[i for i in range(2, 11)],
+        label_visibility="collapsed"
     )
-    st.text(" ")
+    st.write(" ")
 
+    st.write("Select your color palette")
     palette_input = st.selectbox(
         label="Select your color palette",
         options=["No palette", *pixelator.get_palettes("RGB").keys()],
         index=None,
+        label_visibility="collapsed"
     )
     palette = "" if palette_input == "No palette" else str(palette_input)
     st.text(" ")
 
     # Pixelate button - check if an image has been uploaded. If yes,
-    # pixelate and set show_preview session state to True. This is 
+    # pixelate and set show_preview session state to True. This is
     # needed in col3 to display the pixelated image (if one is available)
-    if st.button(label="Pixelate", use_container_width=True):
+    if st.button(label="Pixelate!", use_container_width=True):
         if original_image is not None:
             with st.spinner("Pixelating image..."):
                 st.session_state.pixelated_image = pixelate(
@@ -100,7 +106,7 @@ with col3:
     # Download button - download buffered image
     if st.session_state.pixelated_image is not None:
         st.download_button(
-            label="Download",
+            label="Download pixelated image",
             data=buffered_image,
             file_name="pixelator.jpg",
             mime="image/jpeg",
