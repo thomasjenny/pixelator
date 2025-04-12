@@ -139,6 +139,8 @@ class Pixelator:
         Returns:
             Image.Image: the pixelated image.
         """
+        print(f"Pixelating {image_path}...")
+
         # Convert image to numpy array
         with Image.open(image_path) as im:
             image_array = np.asarray(im)
@@ -176,6 +178,8 @@ class Pixelator:
                 "Call 'pixelate()' first to generate a pixelated image."
             )
 
+        return None
+
     def save_image(self, out_path: str, out_img_name: str):
         """Saves the pixelated image to the specified file path (if 
         created).
@@ -195,17 +199,19 @@ class Pixelator:
                 "Call 'pixelate()' first to generate a pixelated image."
             )
 
+        return None
+
 
 if __name__ == "__main__":
     pixelator = Pixelator()
 
-    in_path = "img/lamborghini_small.jpg"
-    out_path = "pixelated_images"
-    out_name = "lambo_test.jpg"
+    in_path = "examples/01_original.jpg"
+    out_path = "examples"
+    out_name = "01_test.jpg"
 
-    # Test show and save functions before pixelating
-    # pixelator.show_image()
-    # pixelator.save_image(out_path, out_name)
+    # Test the show and save functions before pixelating (they won't work)
+    pixelator.show_image()
+    pixelator.save_image(out_path, out_name)
 
     # Pixelate image, show it and save it
     pixelator.pixelate(in_path, 3, "shimmering_sunset")
